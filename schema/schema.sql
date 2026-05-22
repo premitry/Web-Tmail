@@ -16,10 +16,15 @@ CREATE TABLE IF NOT EXISTS inboxes (
   username TEXT NOT NULL,
   domain TEXT NOT NULL,
   token TEXT UNIQUE NOT NULL,
+  pin_hash TEXT,
+  one_time INTEGER NOT NULL DEFAULT 0,
+  expires_at TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   last_seen_at TEXT,
   message_count INTEGER NOT NULL DEFAULT 0
 );
+CREATE INDEX IF NOT EXISTS idx_inboxes_email ON inboxes(email);
+CREATE INDEX IF NOT EXISTS idx_inboxes_expires ON inboxes(expires_at);
 
 CREATE TABLE IF NOT EXISTS messages (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,6 +41,8 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(inbox_id) REFERENCES inboxes(id) ON DELETE CASCADE
 );
+CREATE INDEX IF NOT EXISTS idx_messages_inbox ON messages(inbox_id);
+CREATE INDEX IF NOT EXISTS idx_messages_created ON messages(created_at);
 
 CREATE TABLE IF NOT EXISTS api_keys (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,14 +63,20 @@ CREATE TABLE IF NOT EXISTS activities (
 
 INSERT OR IGNORE INTO settings(key,value) VALUES
 ('app_name','Parciv Tmail'),
+('app_tagline','Privacy first temporary email'),
 ('logo_url','https://i.ibb.co.com/1tNtxMjH/image.png'),
 ('favicon_url','https://i.ibb.co.com/1tNtxMjH/image.png'),
 ('primary_color','#14b8a6'),
-('accent_color','#8b5cf6'),
+('accent_color','#0d9488'),
+('bg_color','#0a0d14'),
+('panel_color','#11161f'),
+('text_color','#e7ecf3'),
+('default_theme','dark'),
 ('default_language','id'),
 ('admin_username','admin'),
 ('admin_password_hash',''),
 ('delete_after_days','7'),
+('one_time_inbox_minutes','10'),
 ('emergency_cleanup_enabled','1'),
 ('storage_warning_percent','80'),
 ('storage_danger_percent','95'),
@@ -81,6 +94,12 @@ INSERT OR IGNORE INTO settings(key,value) VALUES
 ('cookie_notice_enabled','0'),
 ('sound_enabled','0'),
 ('web_domain','domain.com'),
-('api_domain','api.domain.com');
+('api_domain','api.domain.com'),
+('telegram_url',''),
+('show_api_button','1'),
+('show_telegram_button','1'),
+('show_theme_toggle','1'),
+('show_how_it_works','1'),
+('footer_text','Privacy first temporary email service.');
 
 INSERT OR IGNORE INTO domains(domain,active) VALUES ('domain.com',1);
