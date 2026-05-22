@@ -1,0 +1,22 @@
+name = "parciv-tmail"
+main = "src/worker.js"
+compatibility_date = "2026-05-15"
+
+[vars]
+DEFAULT_LOGO_URL = "https://i.ibb.co.com/1tNtxMjH/image.png"
+DEFAULT_FAVICON_URL = "https://i.ibb.co.com/1tNtxMjH/image.png"
+DEFAULT_WEB_DOMAIN = "domain.com"
+DEFAULT_API_DOMAIN = "api.domain.com"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "parciv_tmail_db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# Optional R2 for attachments later. Keep disabled by default.
+# [[r2_buckets]]
+# binding = "R2"
+# bucket_name = "parciv-tmail-attachments"
+
+[triggers]
+crons = ["0 */6 * * *"]

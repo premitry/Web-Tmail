@@ -1,0 +1,15 @@
+{
+  "name": "parciv-tmail",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:local": "wrangler d1 execute parciv_tmail_db --local --file=./schema/schema.sql",
+    "db:prod": "wrangler d1 execute parciv_tmail_db --remote --file=./schema/schema.sql"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}
